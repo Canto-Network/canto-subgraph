@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { log, BigInt, BigDecimal, Address, ethereum } from '@graphprotocol/graph-ts'
+import { log, BigInt, BigDecimal, Address, EthereumEvent } from '@graphprotocol/graph-ts'
 import { ERC20 } from '../types/Factory/ERC20'
 // import { ERC20SymbolBytes } from '../types/Factory/ERC20SymbolBytes'
 // import { ERC20NameBytes } from '../types/Factory/ERC20NameBytes'
@@ -9,7 +9,7 @@ import { TokenDefinition } from './tokenDefinition'
 
 // todo: update addresses
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
-export const FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
+export const FACTORY_ADDRESS = '0xAa5D5be63bf3E4B65b85952F31920Ceb44cb849b'
 
 export let ZERO_BI = BigInt.fromI32(0)
 export let ONE_BI = BigInt.fromI32(1)
@@ -36,7 +36,8 @@ export function bigDecimalExp18(): BigDecimal {
 }
 
 export function convertEthToDecimal(eth: BigInt): BigDecimal {
-  return eth.toBigDecimal().div(exponentToBigDecimal(BigInt.fromString("18")))
+  return eth.toBigDecimal().div(exponentToBigDecimal(BigInt.fromI32(18)))
+  // return eth.toBigDecimal().div(exponentToBigDecimal(BigInt.fromString("18")))
 }
 
 export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: BigInt): BigDecimal {
@@ -174,7 +175,7 @@ export function createUser(address: Address): void {
   }
 }
 
-export function createLiquiditySnapshot(position: LiquidityPosition, event: ethereum.Event): void {
+export function createLiquiditySnapshot(position: LiquidityPosition, event: EthereumEvent): void {
   let timestamp = event.block.timestamp.toI32()
   let bundle = Bundle.load('1')
   let pair = Pair.load(position.pair)

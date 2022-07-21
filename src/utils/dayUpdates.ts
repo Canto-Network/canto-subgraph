@@ -1,10 +1,10 @@
 /* eslint-disable prefer-const */
-import { BigDecimal, BigInt, ethereum } from '@graphprotocol/graph-ts'
+import { BigDecimal, BigInt, EthereumEvent} from '@graphprotocol/graph-ts'
 import { Bundle, Pair, PairDayData, Token, TokenDayData, StableswapDayData, StableswapFactory } from '../types/schema'
 import { PairHourData } from './../types/schema'
 import { FACTORY_ADDRESS, ONE_BI, ZERO_BD, ZERO_BI } from './helpers'
 
-export function updateStableswapDayData(event: ethereum.Event): StableswapDayData {
+export function updateStableswapDayData(event: EthereumEvent): StableswapDayData {
   let stableswap = StableswapFactory.load(FACTORY_ADDRESS)
   let timestamp = event.block.timestamp.toI32()
   let dayID = timestamp / 86400
@@ -28,7 +28,7 @@ export function updateStableswapDayData(event: ethereum.Event): StableswapDayDat
   return stableswapDayData as StableswapDayData
 }
 
-export function updatePairDayData(event: ethereum.Event): PairDayData {
+export function updatePairDayData(event: EthereumEvent): PairDayData {
   let timestamp = event.block.timestamp.toI32()
   let dayID = timestamp / 86400
   let dayStartTimestamp = dayID * 86400
@@ -60,7 +60,7 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
   return pairDayData as PairDayData
 }
 
-export function updatePairHourData(event: ethereum.Event): PairHourData {
+export function updatePairHourData(event: EthereumEvent): PairHourData {
   let timestamp = event.block.timestamp.toI32()
   let hourIndex = timestamp / 3600 // get unique hour within unix history
   let hourStartUnix = hourIndex * 3600 // want the rounded effect
@@ -90,7 +90,7 @@ export function updatePairHourData(event: ethereum.Event): PairHourData {
   return pairHourData as PairHourData
 }
 
-export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDayData {
+export function updateTokenDayData(token: Token, event: EthereumEvent): TokenDayData {
   let bundle = Bundle.load('1')
   let timestamp = event.block.timestamp.toI32()
   let dayID = timestamp / 86400
