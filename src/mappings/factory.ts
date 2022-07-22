@@ -13,7 +13,16 @@ import {
   ZERO_BI,
 } from '../utils/helpers'
 
-export function handleNewPair(event: PairCreated): void {
+export function handlePairCreated(event: PairCreated): void {
+  log.debug("CUSTOM {}: Block {} {} \n Log Idx {} Txn {} Txn Log Idx {}", [
+    "handleNewPair",
+    event.block.number.toString(),
+    event.block.hash.toString(),
+    event.logIndex.toString(),
+    event.transaction.hash.toString(),
+    event.transactionLogIndex.toString(),
+  ]);
+
   // load factory (create if first exchange)
   let factory = StableswapFactory.load(FACTORY_ADDRESS)
   if (factory === null) {

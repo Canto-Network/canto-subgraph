@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { BigInt, BigDecimal, store, Address } from '@graphprotocol/graph-ts'
+import { BigInt, BigDecimal, store, Address, log } from '@graphprotocol/graph-ts'
 import {
   Pair,
   Token,
@@ -30,6 +30,15 @@ function isCompleteMint(mintId: string): boolean {
 }
 
 export function handleTransfer(event: Transfer): void {
+  log.debug("CUSTOM {}: Block {} {} \n Log Idx {} Txn {} Txn Log Idx {}", [
+    "handleTransfer",
+    event.block.number.toString(),
+    event.block.hash.toString(),
+    event.logIndex.toString(),
+    event.transaction.hash.toString(),
+    event.transactionLogIndex.toString(),
+  ]);
+
   // ignore initial transfers for first adds
   if (event.params.to.toHexString() == ADDRESS_ZERO && event.params.amount.equals(BigInt.fromI32(1000))) {
     return
@@ -211,6 +220,15 @@ export function handleTransfer(event: Transfer): void {
 }
 
 export function handleSync(event: Sync): void {
+  log.debug("CUSTOM {}: Block {} {} \n Log Idx {} Txn {} Txn Log Idx {}", [
+    "handleSync",
+    event.block.number.toString(),
+    event.block.hash.toString(),
+    event.logIndex.toString(),
+    event.transaction.hash.toString(),
+    event.transactionLogIndex.toString(),
+  ]);
+ 
   let pair = Pair.load(event.address.toHex())!
   let token0 = Token.load(pair.token0)!
   let token1 = Token.load(pair.token1)!
@@ -276,6 +294,15 @@ export function handleSync(event: Sync): void {
 }
 
 export function handleMint(event: Mint): void {
+  log.debug("CUSTOM {}: Block {} {} \n Log Idx {} Txn {} Txn Log Idx {}", [
+    "handleMint",
+    event.block.number.toString(),
+    event.block.hash.toString(),
+    event.logIndex.toString(),
+    event.transaction.hash.toString(),
+    event.transactionLogIndex.toString(),
+  ]);
+
   let transaction = Transaction.load(event.transaction.hash.toHexString())!
   let mints = transaction.mints
   let mint = MintEvent.load(mints[mints.length - 1])!
@@ -331,6 +358,15 @@ export function handleMint(event: Mint): void {
 }
 
 export function handleBurn(event: Burn): void {
+  log.debug("CUSTOM {}: Block {} {} \n Log Idx {} Txn {} Txn Log Idx {}", [
+    "handleBurn",
+    event.block.number.toString(),
+    event.block.hash.toString(),
+    event.logIndex.toString(),
+    event.transaction.hash.toString(),
+    event.transactionLogIndex.toString(),
+  ]);
+  
   let transaction = Transaction.load(event.transaction.hash.toHexString())
 
   // safety check
@@ -393,6 +429,15 @@ export function handleBurn(event: Burn): void {
 }
 
 export function handleSwap(event: Swap): void {
+  log.debug("CUSTOM {}: Block {} {} \n Log Idx {} Txn {} Txn Log Idx {}", [
+    "handleSwap",
+    event.block.number.toString(),
+    event.block.hash.toString(),
+    event.logIndex.toString(),
+    event.transaction.hash.toString(),
+    event.transactionLogIndex.toString(),
+  ]);
+  
   let pair = Pair.load(event.address.toHexString())!
   let token0 = Token.load(pair.token0)!
   let token1 = Token.load(pair.token1)!
